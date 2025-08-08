@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architectural Styles Dataset Explorer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+        }
+
+        .main-container {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .explorer-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 1200px;
+            min-height: 600px;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 350px;
+            background: #f8f9fa;
+            border-right: 1px solid #e9ecef;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            padding: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .folder-icon {
+            font-size: 20px;
+        }
+
+        .sidebar-title {
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .folder-info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .search-bar {
+            padding: 15px 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: #4facfe;
+        }
+
+        .folder-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px 0;
+            max-height: 400px;
+        }
+
+        .folder-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .folder-item:hover {
+            background: #e9ecef;
+            transform: translateX(2px);
+        }
+
+        .folder-item.active {
+            background: rgba(79, 172, 254, 0.1);
+            border-left-color: #4facfe;
+        }
+
+        .folder-item-icon {
+            margin-right: 12px;
+            font-size: 16px;
+            color: #4facfe;
+        }
+
+        .folder-item-name {
+            flex: 1;
+            font-size: 0.85rem;
+            color: #333;
+        }
+
+        .folder-item-count {
+            font-size: 0.75rem;
+            color: #666;
+            background: #e9ecef;
+            padding: 2px 8px;
+            border-radius: 10px;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .content-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-header {
+            background: white;
+            padding: 20px 30px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #666;
+        }
+
+        .breadcrumb-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .view-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .view-btn {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .view-btn.active {
+            background: #4facfe;
+            color: white;
+            border-color: #4facfe;
+        }
+
+        .upload-area {
+            padding: 30px;
+            text-align: center;
+            border: 3px dashed #ddd;
+            margin: 30px;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        .upload-area.dragover {
+            border-color: #4facfe;
+            background: rgba(79, 172, 254, 0.1);
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 15px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+        }
+
+        .upload-text {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .upload-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4);
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 15px;
+            padding: 25px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .image-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .image-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .image-preview {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            transition: all 0.3s ease;
+        }
+
+        .image-card:hover .image-preview {
+            transform: scale(1.05);
+        }
+
+        .image-info {
+            padding: 10px;
+        }
+
+        .image-name {
+            font-weight: 500;
+            color: #333;
+            font-size: 0.8rem;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .image-size {
+            color: #888;
+            font-size: 0.7rem;
+        }
+
+        .chart-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 1200px;
+            padding: 30px;
+            margin-top: 20px;
+        }
+
+        .chart-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .chart-header h2 {
+            color: #333;
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 10px;
+        }
+
+        .chart-header p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+            width: 100%;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+
+        .modal-image {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .stats-summary {
+            display: flex;
+            justify-content: space-around;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4facfe;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 1024px) {
+            .explorer-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                max-height: 250px;
+            }
+            
+            .folder-list {
+                max-height: 150px;
+            }
+
+            .chart-wrapper {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .image-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 10px;
+                padding: 15px;
+            }
+            
+            .main-container {
+                padding: 10px;
+            }
+
+            .chart-container {
+                padding: 20px;
+            }
+
+            .stats-summary {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏛️ Architectural Styles Dataset Explorer</h1>
+        <p>Explore 10,113 images across 25 different architectural styles from around the world</p>
+    </div>
+
+    <div class="main-container">
+        <div class="explorer-container">
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <div class="folder-icon">📁</div>
+                    <div class="sidebar-title">master_arch</div>
+                </div>
+                <div class="folder-info">
+                    <div>25 styles • <span id="totalImages">10,113</span> images total</div>
+                </div>
+                <div class="search-bar">
+                    <input type="text" class="search-input" placeholder="Filter styles..." id="searchInput">
+                </div>
+                <div class="folder-list" id="folderList">
+                    <!-- Folders will be populated here -->
+                </div>
+            </div>
+
+            <div class="content-area">
+                <div class="content-header">
+                    <div class="breadcrumb" id="breadcrumb">
+                        <div class="breadcrumb-item">
+                            <span>📁</span>
+                            <span>master_arch</span>
+                        </div>
+                    </div>
+                    <div class="view-controls">
+                        <button class="view-btn active" data-view="grid">Grid</button>
+                        <button class="view-btn" data-view="list">List</button>
+                    </div>
+                </div>
+
+                <div id="uploadArea" class="upload-area hidden">
+                    <div class="upload-icon">🏛️</div>
+                    <div class="upload-text">Upload more images for this style</div>
+                    <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                        Add Images
+                    </button>
+                    <input type="file" id="fileInput" multiple accept="image/*" class="hidden">
+                </div>
+
+                <div id="imageGrid" class="image-grid"></div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-header">
+                <h2>📊 Architectural Styles Distribution</h2>
+                <p>Number of images per architectural style in the dataset</p>
+            </div>
+            
+            <div class="stats-summary">
+                <div class="stat-item">
+                    <div class="stat-number">25</div>
+                    <div class="stat-label">Architectural Styles</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="chartTotalImages">10,113</div>
+                    <div class="stat-label">Total Images</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="avgImages">404</div>
+                    <div class="stat-label">Avg per Style</div>
+                </div>
+            </div>
+            
+            <div class="chart-wrapper">
+                <canvas id="architecturalChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <img id="modalImage" class="modal-image" src="" alt="">
+        </div>
+    </div>
+
+    <script>
+        // Sample architectural styles data with realistic image counts (based on the 10,113 total)
+        const architecturalStylesData = {
+            'Achaemenid architecture': 298,
+            'American craftsman style': 412,
+            'American Foursquare architecture': 356,
+            'Ancient Egyptian architecture': 478,
+            'Art Deco architecture': 532,
+            'Art Nouveau architecture': 445,
+            'Baroque architecture': 623,
+            'Bauhaus architecture': 289,
+            'Beaux-Arts architecture': 387,
+            'Byzantine architecture': 401,
+            'Chicago school architecture': 334,
+            'Colonial architecture': 456,
+            'Deconstructivism': 267,
+            'Edwardian architecture': 389,
+            'Georgian architecture': 423,
+            'Gothic architecture': 598,
+            'Greek Revival architecture': 445,
+            'International style': 378,
+            'Novelty architecture': 234,
+            'Palladian architecture': 356,
+            'Postmodern architecture': 445,
+            'Queen Anne architecture': 389,
+            'Romanesque architecture': 467,
+            'Russian Revival architecture': 298,
+            'Tudor Revival architecture': 423
+        };
+
+        // Sample image URLs (placeholder architectural images)
+        const sampleImages = {
+            'Achaemenid architecture': [
+                'https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?w=300&h=200&fit=crop',
+                'https://images.unsplash.com/photo-1577495508048-b635879837f1?w=300&h=200&fit=crop',
+                'https://images.unsplash.com/photo-1571055107559-3e67626fa8be?w=300&h=200&fit=crop'
+            ],
+            'Art Deco architecture': [
+                'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=300&h=200&fit=crop',
+                'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=300&h=200&fit=crop',
+                'https://images.unsplash.com/photo-1551632811-561732d1e306?w=300&h=200&fit=crop'
+            ],
+            'Gothic architecture': [
+                'https://images.unsplash.com/photo-1520637836862-4d197d17c50a?w=300&h=200&fit=crop',
+                'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=300&h=200&fit=crop',
+                'https://images.unsplash.com/photo-1551016595-834406bf3171?w=300&h=200&fit=crop'
+            ],
+            'Baroque architecture': [
+                'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=300&h=200&fit=crop',
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=300&h=200&fit=crop',
+                'https://images.unsplash.com/photo-1587976932745-72b10e46dd5d?w=300&h=200&fit=crop'
+            ],
+            'Colonial architecture': [
+                'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=300&h=200&fit=crop',
+                'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?w=300&h=200&fit=crop',
+                'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=300&h=200&fit=crop'
+            ]
+        };
+
+        let currentFolder = null;
+        let folderData = {};
+        let filteredFolders = Object.keys(architecturalStylesData);
+        let chart = null;
+
+        // Initialize folder structure with sample images for demonstration
+        Object.keys(architecturalStylesData).forEach(style => {
+            folderData[style] = [];
+            
+            // Add sample images for some styles
+            if (sampleImages[style]) {
+                sampleImages[style].forEach((url, index) => {
+                    folderData[style].push({
+                        name: `${style.replace(' architecture', '').replace(' style', '')}_${index + 1}.jpg`,
+                        size: '1.2 MB',
+                        url: url,
+                        id: Date.now() + Math.random(),
+                        folder: style
+                    });
+                });
+            }
+        });
+
+        // DOM elements
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const imageGrid = document.getElementById('imageGrid');
+        const folderList = document.getElementById('folderList');
+        const searchInput = document.getElementById('searchInput');
+        const breadcrumb = document.getElementById('breadcrumb');
+        const modal = document.getElementById('modal');
+        const modalImage = document.getElementById('modalImage');
+        const totalImages = document.getElementById('totalImages');
+
+        // Event listeners
+        fileInput.addEventListener('change', handleFiles);
+        searchInput.addEventListener('input', filterFolders);
+
+        // Drag and drop handlers
+        uploadArea.addEventListener('dragover', handleDragOver);
+        uploadArea.addEventListener('dragleave', handleDragLeave);
+        uploadArea.addEventListener('drop', handleDrop);
+        uploadArea.addEventListener('click', () => {
+            if (currentFolder) fileInput.click();
+        });
+
+        // View control handlers
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+            });
+        });
+
+        function renderFolders() {
+            folderList.innerHTML = '';
+            
+            filteredFolders.forEach(style => {
+                const folderItem = document.createElement('div');
+                folderItem.className = 'folder-item';
+                if (currentFolder === style) folderItem.classList.add('active');
+                
+                const imageCount = architecturalStylesData[style];
+                
+                folderItem.innerHTML = `
+                    <div class="folder-item-icon">📁</div>
+                    <div class="folder-item-name">${style}</div>
+                    <div class="folder-item-count">${imageCount}</div>
+                `;
+                
+                folderItem.addEventListener('click', () => selectFolder(style));
+                folderList.appendChild(folderItem);
+            });
+        }
+
+        function selectFolder(style) {
+            currentFolder = style;
+            updateBreadcrumb();
+            renderFolders();
+            renderImages();
+            
+            if (folderData[style].length === 0) {
+                showUploadArea();
+            } else {
+                hideUploadArea();
+            }
+        }
+
+        function updateBreadcrumb() {
+            if (currentFolder) {
+                breadcrumb.innerHTML = `
+                    <div class="breadcrumb-item">
+                        <span>📁</span>
+                        <span style="cursor: pointer;" onclick="deselectFolder()">master_arch</span>
+                    </div>
+                    <span>></span>
+                    <div class="breadcrumb-item">
+                        <span>📁</span>
+                        <span>${currentFolder}</span>
+                    </div>
+                `;
+            } else {
+                breadcrumb.innerHTML = `
+                    <div class="breadcrumb-item">
+                        <span>📁</span>
+                        <span>master_arch</span>
+                    </div>
+                `;
+            }
+        }
+
+        function deselectFolder() {
+            currentFolder = null;
+            updateBreadcrumb();
+            renderFolders();
+            hideUploadArea();
+            imageGrid.innerHTML = '';
+        }
+
+        function filterFolders() {
+            const query = searchInput.value.toLowerCase();
+            filteredFolders = Object.keys(architecturalStylesData).filter(style => 
+                style.toLowerCase().includes(query)
+            );
+            renderFolders();
+            updateChart();
+        }
+
+        function showUploadArea() {
+            uploadArea.classList.remove('hidden');
+        }
+
+        function hideUploadArea() {
+            uploadArea.classList.add('hidden');
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            if (currentFolder) {
+                uploadArea.classList.add('dragover');
+            }
+        }
+
+        function handleDragLeave(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            if (currentFolder) {
+                const files = Array.from(e.dataTransfer.files);
+                processFiles(files);
+            }
+        }
+
+        function handleFiles(e) {
+            if (currentFolder) {
+                const files = Array.from(e.target.files);
+                processFiles(files);
+            }
+        }
+
+        function processFiles(files) {
+            if (!currentFolder) return;
+            
+            const imageFiles = files.filter(file => file.type.startsWith('image/'));
+            
+            imageFiles.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const imageData = {
+                        name: file.name,
+                        size: formatFileSize(file.size),
+                        url: e.target.result,
+                        id: Date.now() + Math.random(),
+                        folder: currentFolder
+                    };
+                    folderData[currentFolder].push(imageData);
+                    renderImages();
+                    hideUploadArea();
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function renderImages() {
+            if (!currentFolder) return;
+            
+            const images = folderData[currentFolder];
+            imageGrid.innerHTML = '';
+            
+            if (images.length === 0) {
+                showUploadArea();
+                return;
+            }
+            
+            images.forEach(image => {
+                const imageCard = document.createElement('div');
+                imageCard.className = 'image-card';
+                
+                imageCard.innerHTML = `
+                    <img src="${image.url}" alt="${image.name}" class="image-preview">
+                    <div class="image-info">
+                        <div class="image-name" title="${image.name}">${image.name}</div>
+                        <div class="image-size">${image.size}</div>
+                    </div>
+                `;
+                
+                imageCard.addEventListener('click', () => {
+                    openModal(image.url);
+                });
+                
+                imageGrid.appendChild(imageCard);
+            });
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+        }
+
+        function openModal(imageUrl) {
+            modalImage.src = imageUrl;
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+
+        function initializeChart() {
+            const ctx = document.getElementById('architecturalChart').getContext('2d');
+            
+            const labels = Object.keys(architecturalStylesData).map(style => 
+                style.replace(' architecture', '').replace(' style', '')
+            );
+            const data = Object.values(architecturalStylesData);
+            
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Number of Images',
+                        data: data,
+                        backgroundColor: 'rgba(79, 172, 254, 0.6)',
+                        borderColor: 'rgba(79, 172, 254, 1)',
+                        borderWidth: 2,
+                        borderRadius: 8,
+                        borderSkipped: false,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleColor: 'white',
+                            bodyColor: 'white',
+                            borderColor: '#4facfe',
+                            borderWidth: 1
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            },
+                            ticks: {
+                                color: '#666'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#666',
+                                maxRotation: 45,
+                                font: {
+                                    size: 10
+                                }
+                            }
+                        }
+                    },
+                    onHover: (event, activeElements) => {
+                        event.native.target.style.cursor = activeElements.length > 0 ? 'pointer' : 'default';
+                    },
+                    onClick: (event, activeElements) => {
+                        if (activeElements.length > 0) {
+                            const index = activeElements[0].index;
+                            const styleName = Object.keys(architecturalStylesData)[index];
+                            selectFolder(styleName);
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateChart() {
+            if (!chart) return;
+            
+            const filteredData = {};
+            filteredFolders.forEach(style => {
+                filteredData[style] = architecturalStylesData[style];
+            });
+            
+            const labels = Object.keys(filteredData).map(style => 
+                style.replace(' architecture', '').replace(' style', '')
+            );
+            const data = Object.values(filteredData);
+            
+            chart.data.labels = labels;
+            chart.data.datasets[0].data = data;
+            chart.update();
+        }
+
+        // Modal event listeners
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // Initialize the application
+        renderFolders();
+        updateBreadcrumb();
+        initializeChart();
+    </script>
+</body>
+</html>
