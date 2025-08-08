@@ -51,8 +51,8 @@
 
         .explorer-container {
             background: #1e293b;
-            border-radius: 4px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             width: 100%;
             max-width: 1200px;
             min-height: 700px;
@@ -89,7 +89,7 @@
             width: 32px;
             height: 32px;
             background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            border-radius: 3px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -107,7 +107,7 @@
             width: 100%;
             padding: 12px 16px;
             border: 1px solid #334155;
-            border-radius: 3px;
+            border-radius: 8px;
             font-size: 0.875rem;
             background: #0f172a;
             color: #e2e8f0;
@@ -160,7 +160,7 @@
             color: #94a3b8;
             background: #334155;
             padding: 4px 8px;
-            border-radius: 3px;
+            border-radius: 12px;
             min-width: 24px;
             text-align: center;
         }
@@ -218,7 +218,7 @@
             padding: 8px 16px;
             border: 1px solid #334155;
             background: #0f172a;
-            border-radius: 3px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 0.875rem;
             color: #e2e8f0;
@@ -232,7 +232,61 @@
         }
 
         .upload-area {
-            display: none;
+            padding: 48px;
+            text-align: center;
+            border: 2px dashed #334155;
+            margin: 32px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            background: #0f172a;
+        }
+
+        .upload-area.dragover {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.1);
+            transform: scale(1.01);
+        }
+
+        .upload-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+
+        .upload-text {
+            font-size: 1.25rem;
+            color: #f1f5f9;
+            margin-bottom: 8px;
+        }
+
+        .upload-subtext {
+            font-size: 0.875rem;
+            color: #94a3b8;
+            margin-bottom: 24px;
+        }
+
+        .upload-btn {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
         }
 
         .image-grid {
@@ -246,17 +300,17 @@
 
         .image-card {
             background: #0f172a;
-            border-radius: 4px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
             cursor: pointer;
             border: 1px solid #334155;
         }
 
         .image-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
             border-color: #3b82f6;
         }
 
@@ -268,7 +322,7 @@
         }
 
         .image-card:hover .image-preview {
-            transform: scale(1.02);
+            transform: scale(1.05);
         }
 
         .image-info {
@@ -292,8 +346,8 @@
 
         .chart-container {
             background: #1e293b;
-            border-radius: 4px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             width: 100%;
             max-width: 1200px;
             padding: 32px;
@@ -323,7 +377,7 @@
             gap: 20px;
             background: #0f172a;
             padding: 24px;
-            border-radius: 4px;
+            border-radius: 12px;
             margin-bottom: 24px;
             border: 1px solid #334155;
         }
@@ -350,7 +404,7 @@
             height: 400px;
             width: 100%;
             background: #0f172a;
-            border-radius: 4px;
+            border-radius: 12px;
             padding: 16px;
             border: 1px solid #334155;
         }
@@ -389,8 +443,8 @@
         .modal-image {
             max-width: 100%;
             max-height: 100%;
-            border-radius: 4px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
         }
 
         .modal-close {
@@ -428,7 +482,7 @@
             width: 80px;
             height: 80px;
             background: #334155;
-            border-radius: 4px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -449,7 +503,7 @@
             color: #94a3b8;
         }
 
-        /* mobile stuff */
+        /* Responsive Design */
         @media (max-width: 1024px) {
             .explorer-container {
                 flex-direction: column;
@@ -494,7 +548,7 @@
             }
         }
 
-        /* make scrollbars look nice */
+        /* Scrollbar Styling */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -533,7 +587,7 @@
                     <input type="text" class="search-input" placeholder="Search for a building style..." id="searchInput">
                 </div>
                 <div class="folder-list" id="folderList">
-                    <!-- building styles go here -->
+                    <!-- Building style folders will appear here -->
                 </div>
             </div>
 
@@ -552,7 +606,13 @@
                 </div>
 
                 <div id="uploadArea" class="upload-area hidden">
-                    <!-- upload stuff removed -->
+                    <div class="upload-icon">↑</div>
+                    <div class="upload-text">Add More Pictures</div>
+                    <div class="upload-subtext">You can upload more examples of this building style</div>
+                    <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                        Choose Pictures
+                    </button>
+                    <input type="file" id="fileInput" multiple accept="image/*" class="hidden">
                 </div>
 
                 <div id="imageGrid" class="image-grid">
@@ -604,7 +664,7 @@
     </div>
 
     <script>
-        // all the building types and how many pics each has
+        // Different building styles with how many pictures each has
         const buildingStylesData = {
             'Achaemenid architecture': 298,
             'American craftsman style': 412,
@@ -633,49 +693,49 @@
             'Tudor Revival architecture': 423
         };
 
-        // some example pics to show how it works
+        // Sample building pictures for demonstration
         const sampleImages = {
             'Art Deco architecture': [
-                'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=400&h=300&fit=crop&auto=format',
-                'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=400&h=300&fit=crop&auto=format',
-                'https://images.unsplash.com/photo-1575847628774-1cec0e78e022?w=400&h=300&fit=crop&auto=format',
-                'https://images.unsplash.com/photo-1619623924080-b8b24eea47b3?w=400&h=300&fit=crop&auto=format'
+                'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=400&h=300&fit=crop&auto=format', // Chrysler Building
+                'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=400&h=300&fit=crop&auto=format', // Empire State Building
+                'https://images.unsplash.com/photo-1575847628774-1cec0e78e022?w=400&h=300&fit=crop&auto=format', // Art Deco facade
+                'https://images.unsplash.com/photo-1619623924080-b8b24eea47b3?w=400&h=300&fit=crop&auto=format'  // Miami Art Deco
             ],
             'Gothic architecture': [
-                'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=300&fit=crop&auto=format',
-                'https://images.unsplash.com/photo-1548013146-72479768bada?w=400&h=300&fit=crop&auto=format',
-                'https://images.unsplash.com/photo-1520637836862-4d197d17c50a?w=400&h=300&fit=crop&auto=format',
-                'https://images.unsplash.com/photo-1551016595-834406bf3171?w=400&h=300&fit=crop&auto=format'
+                'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=300&fit=crop&auto=format', // Notre Dame
+                'https://images.unsplash.com/photo-1548013146-72479768bada?w=400&h=300&fit=crop&auto=format', // Gothic cathedral
+                'https://images.unsplash.com/photo-1520637836862-4d197d17c50a?w=400&h=300&fit=crop&auto=format', // Westminster Abbey
+                'https://images.unsplash.com/photo-1551016595-834406bf3171?w=400&h=300&fit=crop&auto=format'  // Gothic spires
             ],
             'Baroque architecture': [
-                'https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?w=400&h=300&fit=crop&auto=format',
-                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop&auto=format',
-                'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=400&h=300&fit=crop&auto=format',
-                'https://images.unsplash.com/photo-1587976932745-72b10e46dd5d?w=400&h=300&fit=crop&auto=format'
+                'https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?w=400&h=300&fit=crop&auto=format', // Baroque palace
+                'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop&auto=format', // St. Peter's Basilica
+                'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=400&h=300&fit=crop&auto=format', // Versailles
+                'https://images.unsplash.com/photo-1587976932745-72b10e46dd5d?w=400&h=300&fit=crop&auto=format'  // Baroque church
             ],
             'Colonial architecture': [
-                'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&h=300&fit=crop&auto=format',
-                'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?w=400&h=300&fit=crop&auto=format',
-                'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=300&fit=crop&auto=format'
+                'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&h=300&fit=crop&auto=format', // Colonial house
+                'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?w=400&h=300&fit=crop&auto=format', // Colonial mansion
+                'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=300&fit=crop&auto=format'  // Colonial building
             ],
             'Bauhaus architecture': [
-                'https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=400&h=300&fit=crop&auto=format',
-                'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400&h=300&fit=crop&auto=format',
-                'https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=400&h=300&fit=crop&auto=format'
+                'https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=400&h=300&fit=crop&auto=format', // Bauhaus school
+                'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400&h=300&fit=crop&auto=format', // Modernist building
+                'https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=400&h=300&fit=crop&auto=format'  // Bauhaus style
             ]
         };
 
-        // variables to keep track of stuff
+        // Keep track of what's currently selected
         let currentFolder = null;
         let folderData = {};
         let filteredFolders = Object.keys(buildingStylesData);
         let chart = null;
 
-        // put the sample images in the right folders
+        // Set up the initial picture collections
         Object.keys(buildingStylesData).forEach(style => {
             folderData[style] = [];
             
-            // add some sample pics for demo
+            // Add sample pictures for some styles to show how it works
             if (sampleImages[style]) {
                 sampleImages[style].forEach((url, index) => {
                     folderData[style].push({
@@ -689,7 +749,9 @@
             }
         });
 
-        // grab all the elements we need
+        // Get references to page elements
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
         const imageGrid = document.getElementById('imageGrid');
         const folderList = document.getElementById('folderList');
         const searchInput = document.getElementById('searchInput');
@@ -699,10 +761,19 @@
         const totalImages = document.getElementById('totalImages');
         const selectedCount = document.getElementById('selectedCount');
 
-        // wire up event listeners
+        // Set up event listeners
+        fileInput.addEventListener('change', handleFiles);
         searchInput.addEventListener('input', filterFolders);
 
-        // view buttons
+        // Handle drag and drop
+        uploadArea.addEventListener('dragover', handleDragOver);
+        uploadArea.addEventListener('dragleave', handleDragLeave);
+        uploadArea.addEventListener('drop', handleDrop);
+        uploadArea.addEventListener('click', () => {
+            if (currentFolder) fileInput.click();
+        });
+
+        // Handle view controls
         document.querySelectorAll('.view-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
@@ -741,6 +812,12 @@
             renderImages();
             updateSelectedCount();
             updateChart();
+            
+            if (folderData[style].length === 0) {
+                showUploadArea();
+            } else {
+                hideUploadArea();
+            }
         }
 
         function updateBreadcrumb() {
@@ -778,6 +855,7 @@
             currentFolder = null;
             updateBreadcrumb();
             renderFolders();
+            hideUploadArea();
             imageGrid.innerHTML = `
                 <div class="empty-state">
                     <div class="empty-icon">▣</div>
@@ -854,8 +932,212 @@
                     buildingStylesData[currentFolder]++;
                     updateStats();
                     renderImages();
+                    hideUploadArea();
                     updateChart();
                 };
                 reader.readAsDataURL(file);
-   });
-}
+            });
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function renderImages() {
+            if (!currentFolder) return;
+            
+            const images = folderData[currentFolder];
+            
+            if (images.length === 0) {
+                imageGrid.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📷</div>
+                        <div class="empty-title">No Pictures Yet</div>
+                        <div class="empty-description">Upload some ${simplifyStyleName(currentFolder)} building pictures to get started</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            imageGrid.innerHTML = '';
+            images.forEach(image => {
+                const imageCard = document.createElement('div');
+                imageCard.className = 'image-card';
+                imageCard.innerHTML = `
+                    <img src="${image.url}" alt="${image.name}" class="image-preview" loading="lazy">
+                    <div class="image-info">
+                        <div class="image-name">${image.name}</div>
+                        <div class="image-size">${image.size}</div>
+                    </div>
+                `;
+                
+                imageCard.addEventListener('click', () => openModal(image.url, image.name));
+                imageGrid.appendChild(imageCard);
+            });
+        }
+
+        function openModal(imageUrl, imageName) {
+            modalImage.src = imageUrl;
+            modalImage.alt = imageName;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function updateStats() {
+            const total = Object.values(buildingStylesData).reduce((sum, count) => sum + count, 0);
+            const avg = Math.round(total / Object.keys(buildingStylesData).length);
+            
+            totalImages.textContent = total.toLocaleString();
+            document.getElementById('chartTotalImages').textContent = total.toLocaleString();
+            document.getElementById('avgImages').textContent = avg;
+        }
+
+        function updateChart() {
+            const ctx = document.getElementById('architecturalChart').getContext('2d');
+            
+            // Filter data based on current search
+            const filteredData = {};
+            filteredFolders.forEach(style => {
+                filteredData[style] = buildingStylesData[style];
+            });
+            
+            const labels = Object.keys(filteredData).map(style => simplifyStyleName(style));
+            const data = Object.values(filteredData);
+            
+            // Generate colors with the selected folder highlighted
+            const colors = Object.keys(filteredData).map(style => {
+                if (style === currentFolder) {
+                    return '#3b82f6'; // Bright blue for selected
+                } else {
+                    return '#64748b'; // Gray for others
+                }
+            });
+            
+            const hoverColors = Object.keys(filteredData).map(style => {
+                if (style === currentFolder) {
+                    return '#60a5fa'; // Lighter blue for selected
+                } else {
+                    return '#94a3b8'; // Lighter gray for others
+                }
+            });
+            
+            if (chart) {
+                chart.destroy();
+            }
+            
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Number of Pictures',
+                        data: data,
+                        backgroundColor: colors,
+                        hoverBackgroundColor: hoverColors,
+                        borderColor: colors,
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        borderSkipped: false,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            titleColor: '#f1f5f9',
+                            bodyColor: '#e2e8f0',
+                            borderColor: '#334155',
+                            borderWidth: 1,
+                            cornerRadius: 8,
+                            displayColors: false,
+                            callbacks: {
+                                title: function(context) {
+                                    return context[0].label;
+                                },
+                                label: function(context) {
+                                    return `${context.parsed.y.toLocaleString()} pictures`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: '#94a3b8',
+                                maxRotation: 45,
+                                font: {
+                                    size: 11
+                                }
+                            },
+                            grid: {
+                                color: '#334155',
+                                drawBorder: false
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#94a3b8',
+                                callback: function(value) {
+                                    return value.toLocaleString();
+                                }
+                            },
+                            grid: {
+                                color: '#334155',
+                                drawBorder: false
+                            }
+                        }
+                    },
+                    onClick: (event, elements) => {
+                        if (elements.length > 0) {
+                            const index = elements[0].index;
+                            const styleName = filteredFolders[index];
+                            selectFolder(styleName);
+                        }
+                    },
+                    onHover: (event, elements) => {
+                        event.native.target.style.cursor = elements.length > 0 ? 'pointer' : 'default';
+                    }
+                }
+            });
+        }
+
+        // Close modal when clicking outside or pressing Escape
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+
+        // Initialize the page
+        function init() {
+            updateStats();
+            renderFolders();
+            updateChart();
+        }
+
+        // Start the app when page loads
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
