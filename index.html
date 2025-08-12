@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Architecture Image Gallery</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-
-
-
     <style>
         * {
             margin: 0;
@@ -31,19 +28,19 @@
             text-align: center;
         }
 
-        .header h1 {
+        .header_h1 {
             color: #f1f5f9;
             font-size: 2.5rem;
             font-weight: 600;
             margin-bottom: 8px;
         }
 
-        .header p {
+        .header_p {
             color: #94a3b8;
             font-size: 1.125rem;
         }
 
-        .main-container {
+        .main_container {
             flex: 1;
             padding: 24px;
             display: flex;
@@ -52,7 +49,7 @@
             align-items: center;
         }
 
-        .chart-container {
+        .chart_container {
             background: #1e293b;
             border-radius: 4px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -62,24 +59,24 @@
             border: 1px solid #334155;
         }
 
-        .chart-header {
+        .chart_header {
             text-align: center;
             margin-bottom: 32px;
         }
 
-        .chart-header h2 {
+        .chart_header_h2 {
             color: #f1f5f9;
             font-size: 1.75rem;
             font-weight: 600;
             margin-bottom: 8px;
         }
 
-        .chart-header p {
+        .chart_header_p {
             color: #94a3b8;
             font-size: 1rem;
         }
 
-        .stats-summary {
+        .stats_summ {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
@@ -90,24 +87,24 @@
             border: 1px solid #334155;
         }
 
-        .stat-item {
+        .stats_item {
             text-align: center;
             padding: 16px;
         }
 
-        .stat-number {
+        .stats_num {
             font-size: 2rem;
             font-weight: 700;
             color: #3b82f6;
             margin-bottom: 4px;
         }
 
-        .stat-label {
+        .stat_label {
             font-size: 0.875rem;
             color: #94a3b8;
         }
 
-        .chart-wrapper {
+        .chart_wrapper {
             position: relative;
             height: 400px;
             width: 100%;
@@ -117,7 +114,7 @@
             border: 1px solid #334155;
         }
 
-        .acknowledgment-container {
+        .thanks_container {
             background: #1e293b;
             border-radius: 4px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -128,43 +125,43 @@
             text-align: center;
         }
 
-        .acknowledgment-content p {
+        .thanks_content p {
             color: #e2e8f0;
             font-size: 1rem;
             line-height: 1.6;
             margin: 0;
         }
 
-        .acknowledgment-content a {
+        .thank_content a {
             color: #3b82f6;
             text-decoration: none;
             transition: color 0.2s;
         }
 
-        .acknowledgment-content a:hover {
+        .thanks_content a:hover {
             color: #60a5fa;
             text-decoration: underline;
         }
 
         @media (max-width: 768px) {
-            .header h1 {
+            .header_h1 {
                 font-size: 2rem;
             }
             
-            .main-container {
+            .main_container {
                 padding: 16px;
             }
 
-            .chart-container {
+            .chart_container {
                 padding: 20px;
             }
 
-            .stats-summary {
+            .stats_summ {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 16px;
             }
 
-            .chart-wrapper {
+            .chart_wrapper {
                 height: 300px;
             }
         }
@@ -186,57 +183,52 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #475569;
         }
+        
     </style>
 </head>
-
-
-
-
 <body>
     <div class="header">
-        <h1>Architecture Image Gallery</h1>
-        <p>Browse and explore different types of buildings from around the world</p>
+        <h1 class="header_h1">Architecture Image Gallery</h1>
+        <p class="header_p">Browse and explore different types of buildings from around the world</p>
     </div>
 
-    <div class="main-container">
-        <div class="chart-container">
-            <div class="chart-header">
-                <h2>Picture Count by Building Style</h2>
-                <p>How many pictures we have for each type of building</p>
+    <div class="main_container">
+        <div class="chart_container">
+            <div class="chart_header">
+                <h2 class="chart_header_h2">Picture Count by Building Style</h2>
+                <p class="chart_header_p">How many pictures we have for each type of building</p>
             </div>
             
-            <div class="stats-summary">
-                <div class="stat-item">
-                    <div class="stat-number">25</div>
-                    <div class="stat-label">Building Types</div>
+            <div class="stats_summ">
+                <div class="stats_item">
+                    <div class="stats_num">25</div>
+                    <div class="stat_label">Building Types</div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number" id="chartTotalImages">10,113</div>
-                    <div class="stat-label">Total Pictures</div>
+                <div class="stats_item">
+                    <div class="stats_num" id="chartTotalImages">10,113</div>
+                    <div class="stat_label">Total Pictures</div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number" id="avgImages">404</div>
-                    <div class="stat-label">Average per Type</div>
+                <div class="stats_item">
+                    <div class="stats_num" id="avgImages">404</div>
+                    <div class="stat_label">Average per Type</div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number" id="selectedCount">0</div>
-                    <div class="stat-label">Currently Viewing</div>
+                <div class="stats_item">
+                    <div class="stats_num" id="selectedCount">0</div>
+                    <div class="stat_label">Currently Viewing</div>
                 </div>
             </div>
             
-            <div class="chart-wrapper">
+            <div class="chart_wrapper">
                 <canvas id="architecturalChart"></canvas>
             </div>
         </div>
 
-        <div class="acknowledgment-container">
-            <div class="acknowledgment-content">
+        <div class="thanks_container">
+            <div class="thanks_content">
                 <p>Special thanks to <a href="https://www.kaggle.com/datasets/dumitrux/architectural-styles-dataset" target="_blank" rel="noopener">dumitrux on Kaggle</a> for his image database with which the models were run! For further info, please visit his page!</p>
             </div>
         </div>
     </div>
-
-
 
     <script>
         // data styles for the chart
@@ -270,11 +262,11 @@
 
         let chart = null;
 
-        function simplifyStyleName(styleName) {
+        function simplifystylename(styleName) {
             return styleName.replace(' architecture', '').replace(' style', '');
         }
 
-        function updateChart() {
+        function updatechart() {
             const canvas = document.getElementById('architecturalChart');
             const ctx = canvas.getContext('2d');
             
@@ -282,7 +274,7 @@
                 chart.destroy();
             }
             
-            const labels = Object.keys(buildingStylesData).map(style => simplifyStyleName(style));
+            const labels = Object.keys(buildingStylesData).map(style => simplifystylename(style));
             const data = Object.values(buildingStylesData);
             
             // !! more stats???
@@ -339,8 +331,7 @@
                 }
             });
         }
-
-        document.addEventListener('DOMContentLoaded', updateChart);
+        document.addEventListener('DOMContentLoaded', updatechart);
     </script>
 </body>
 </html>
